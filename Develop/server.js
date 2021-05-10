@@ -14,7 +14,13 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 // Routes
+let Datanotes = [];
 
+app.get("/api/notes", function(err, res) {
+    try {
+        Datanotes = fs.readFileSync("Develop/db/db.json","utf8");
+    }
+})
 
 
 

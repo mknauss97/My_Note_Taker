@@ -29,9 +29,10 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     );
     //setup notes post route
     app.post("/api/notes", (req, res) => {
-        let newData = req.body;
+        const newData = req.body;
+        console.log(newData);
         notes.push(newData);
-        updateDb();
+       
         return console.log("added new note: " + newData.title);
     });
 
@@ -43,7 +44,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     //deletes note with specific id
     app.delete("/api/notes/:id", (req, res) => {
         notes.splice(req.params.id, 1);
-        updateDb();
+        
         console.log("deleted note with the id of" + req.params.id);
     });
 
@@ -56,12 +57,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, "./public/index.html"));
     });
-    function updateDb() {
-        fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
-            if (err) throw err;
-            return true;
-        });
-    }
+   
 });
 
 

@@ -29,23 +29,14 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     );
     //setup notes post route
     app.post("/api/notes", (req, res) => {
+        
         const newData = req.body;
         console.log(newData);
         notes.push(newData);
-       
+       fs.writeFile('./db/db.json', notes, 'utf8', (err) =>{
+           if (err) throw err;
+       });
         return console.log("added new note: " + newData.title);
-    });
-
-    //retrieves note with a specified id
-    app.get("/api/notes/:id", (req, res) => {
-        res.json(notes[req.params.id]);
-    });
-
-    //deletes note with specific id
-    app.delete("/api/notes/:id", (req, res) => {
-        notes.splice(req.params.id, 1);
-        
-        console.log("deleted note with the id of" + req.params.id);
     });
 
     // display notes.html when notes is accessed

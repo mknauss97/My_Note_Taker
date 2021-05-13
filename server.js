@@ -14,9 +14,8 @@ app.use(express.static("public"));
 
 // Routes
 
-fs.readFile("db/db.json", "utf8", (err, data) => {
-    if (err) throw err;
-    var notes = JSON.parse(data);
+
+    var notes = [];
 
     //setup notes get route
     app.get("/api/notes", (req, res) => {
@@ -30,9 +29,13 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     //setup notes post route
     app.post("/api/notes", (req, res) => {
         
-        const newData = req.body;
+        let newData = req.body;
         console.log(newData);
+        notes = fs.readFileSync(".db/db.json");
+        notes = JSON.parse(notes);
+        newData.id = notes.length;
         notes.push(newData);
+        notes = JSON.stringify(notes)
        fs.writeFile('./db/db.json', notes, 'utf8', (err) =>{
            if (err) throw err;
        });
@@ -49,7 +52,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
         res.sendFile(path.join(__dirname, "./public/index.html"));
     });
    
-});
+
 
 
 
